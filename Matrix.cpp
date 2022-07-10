@@ -142,5 +142,5 @@ Matrix& Matrix::operator-(const Matrix& other)
 		return nm;
 	}
 	else
-		cout << "Addition can't be performed: different dimensions" << endl;
+		cout << "Substraction can't be performed: different dimensions" << endl;
 }
