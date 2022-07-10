@@ -10,10 +10,11 @@ public:
 	~Matrix();
 	void fill();
 	void get_matrix();
-	void reset_size(int,int);
+	Matrix& operator + (const Matrix&);
 private:
 	float** arr;
 	int sizeX;
 	int sizeY;
+	void reset_size(int, int);
 };
 

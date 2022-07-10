@@ -113,3 +113,19 @@ void Matrix::reset_size(int n_sizeY, int n_sizeX)
 		}
 	}
 }
+/////operations
+Matrix& Matrix::operator+(const Matrix& other)
+{
+	if (sizeY == other.sizeY && sizeX == other.sizeX)
+	{
+		Matrix nm(*this);
+		for (int i = 0; i < sizeY; i++)
+		{
+			for (int j = 0; j < sizeX; j++)
+				nm.arr[i][j] += other.arr[i][j];
+		}
+		return nm;
+	}
+	else
+		cout << "Addition can't be performed: different dimensions"<<endl;
+}
