@@ -11,6 +11,7 @@ public:
 	void fill();
 	void get_matrix();
 	Matrix& operator + (const Matrix&);
+	Matrix& operator -(const Matrix&);
 private:
 	float** arr;
 	int sizeX;
