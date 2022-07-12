@@ -32,7 +32,8 @@ Matrix::Matrix(const Matrix& other)
 {
 	sizeX = other.sizeX;
 	sizeY = other.sizeY;
-	arr = new float* [sizeY];
+	delete arr;
+	arr = new float* [sizeY]; //operator* doesnt pass matrix tp other;
 	for (int i = 0; i < sizeY; i++)
 	{
 		arr[i] = new float[sizeX];
@@ -56,8 +57,11 @@ void Matrix::operator= (const Matrix& other)
 				arr[i][j] = other.arr[i][j];
 		}
 	}
+
 	else
 	{
+		sizeX = other.sizeX;
+		sizeY = other.sizeY;
 		for (int i = 0; i < sizeY; i++)
 		{
 			for (int j = 0; j < sizeX; j++)
@@ -143,4 +147,20 @@ Matrix& Matrix::operator-(const Matrix& other)
 	}
 	else
 		cout << "Substraction can't be performed: different dimensions" << endl;
+}
+Matrix& Matrix::operator*(const Matrix& other)
+{
+	if (sizeX == other.sizeX && sizeY == other.sizeY && sizeX == sizeY)
+	{
+		Matrix res(sizeY, sizeX);
+		for (int i = 0; i < sizeX * sizeY; i++)
+		{
+			for (int j = 0; j < sizeX; j++)
+			{
+				res.arr[(i - (i % sizeY)) / sizeY][i % sizeX] += arr[(i - i % sizeY) / sizeY][j] * other.arr[j][(i - i % sizeY) / sizeY];
+			}
+		}
+		return res;
+	}
+	
 }
