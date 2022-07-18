@@ -6,13 +6,14 @@ public:
 	Matrix(int,int);
 	//copy constructor 
 	Matrix(const Matrix&);
+	Matrix(float**, int, int);
 	Matrix& operator =(const Matrix&);
 	~Matrix();
 	void fill();
 	void get_matrix() const;
 	Matrix operator + (const Matrix&);
-	Matrix operator -(const Matrix&);
-	Matrix operator *(const Matrix&);
+	Matrix operator - (const Matrix&);
+	Matrix operator * (const Matrix&);
 private:
 	float** arr;
 	int sizeX;

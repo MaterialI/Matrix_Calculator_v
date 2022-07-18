@@ -40,6 +40,18 @@ Matrix::Matrix(const Matrix& other)
 			arr[i][j] = other.arr[i][j];
 	}
 }
+Matrix::Matrix(float** p_arr, int sizeY, int sizeX)
+{
+	this->sizeX = sizeX;
+	this->sizeY = sizeY;
+	arr = new float* [sizeY];
+	for (int i = 0; i < sizeY; i++)
+	{
+		arr[i] = new float[sizeX];
+		for (int j = 0; j < sizeX; j++)
+			arr[i][j] = p_arr[i][j];
+	}
+}
 //assignment operator
 Matrix& Matrix::operator= (const Matrix& other)
 {
@@ -147,7 +159,7 @@ Matrix Matrix::operator-(const Matrix& other)
 		cout << "Substraction can't be performed: different dimensions" << endl;
 	return nm;
 }
-Matrix Matrix::operator*(const Matrix& other)
+Matrix Matrix::operator*(const Matrix& other) 
 {
 	if (sizeX == other.sizeX && sizeY == other.sizeY && sizeX == sizeY)
 	{
@@ -156,7 +168,8 @@ Matrix Matrix::operator*(const Matrix& other)
 		{
 			for (int j = 0; j < sizeX; j++)
 			{
-				res.arr[(i - (i % sizeY)) / sizeY][i % sizeX] += arr[(i - i % sizeY) / sizeY][j] * other.arr[j][(i - i % sizeY) / sizeY];
+				
+				res.arr[(i - (i % sizeX)) / sizeX][i % sizeX] += arr[((i - (i % sizeX)) / sizeX)][j] * other.arr[j][(i%sizeX)];
 			}
 		}
 		return res;
