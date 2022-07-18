@@ -14,6 +14,7 @@ public:
 	Matrix operator + (const Matrix&);
 	Matrix operator - (const Matrix&);
 	Matrix operator * (const Matrix&);
+	Matrix operator*(float);
 private:
 	float** arr;
 	int sizeX;

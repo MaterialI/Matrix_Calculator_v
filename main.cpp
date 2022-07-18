@@ -21,21 +21,33 @@ int main()
 	Matrix c = a * b;
 	cout << "________________________________" << endl;
 	c.get_matrix();*/
-	float** arr;
-	arr = new float* [3];
-	for (int i = 0; i < 3; i++)
+	int x = 3;
+	int y = 3;
+	float** arr1;
+	arr1 = new float* [y];
+	for (int i = 0; i < y; i++)
 	{
-		arr[i] = new float[3];
-		for (int j = 0; j < 3; j++)
-			arr[i][j] = rand() % 100 + 1;
+		arr1[i] = new float[x];
+		for (int j = 0; j < x; j++)
+			arr1[i][j] = rand() % 101 - 50;
 		
 	}
-	Matrix a(arr, 3, 3);
+	Matrix a(arr1, y, x);
 	a.get_matrix();
-	cout << "_________________________" << endl;
-	Matrix b(arr,3, 3);
-	cout << "_________________________" << endl;
-	a.operator*(b).get_matrix();
 	
-	
+	cout << "_________________________" << endl;
+	float** arr2;
+	arr2 = new float* [x];
+	for (int i = 0; i < x; i++)
+	{
+		arr2[i] = new float[y];
+		for (int j = 0; j < y; j++)
+			arr2[i][j] = rand() % 101 -50;
+	}
+	Matrix b(arr2,x, y);
+	b.get_matrix();
+	cout << "_________________________" << endl;
+	Matrix c = a.operator*(b);
+	c.operator*(0.1);
+	c.get_matrix();
 }

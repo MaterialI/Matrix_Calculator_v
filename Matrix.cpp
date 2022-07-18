@@ -161,17 +161,27 @@ Matrix Matrix::operator-(const Matrix& other)
 }
 Matrix Matrix::operator*(const Matrix& other) 
 {
-	if (sizeX == other.sizeX && sizeY == other.sizeY && sizeX == sizeY)
+	if (sizeX == other.sizeY && sizeY == other.sizeX/* && sizeX == sizeY*/)
 	{
-		Matrix res(sizeY, sizeX);
+		Matrix res(sizeY, other.sizeX);
 		for (int i = 0; i < sizeX * sizeY; i++)
 		{
 			for (int j = 0; j < sizeX; j++)
 			{
-				
-				res.arr[(i - (i % sizeX)) / sizeX][i % sizeX] += arr[((i - (i % sizeX)) / sizeX)][j] * other.arr[j][(i%sizeX)];
+
+				res.arr[(i - (i % sizeX)) / sizeX][i % sizeX] +=
+					arr[((i - (i % sizeX)) / sizeX)][j] * other.arr[j][(i % sizeX)];
 			}
 		}
 		return res;
 	}
+	else
+		cout << "Multiplication cannot be performed, \n please verify that you entered correct dimentions for matricies" << endl;
+}
+Matrix Matrix::operator* (float cf)
+{
+	for (int i = 0; i < sizeY; i++)
+		for (int j = 0; j < sizeY; j++)
+			arr[i][j] *= cf;
+	return *this;
 }
