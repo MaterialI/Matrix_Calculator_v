@@ -32,7 +32,6 @@ Matrix::Matrix(const Matrix& other)
 {
 	sizeX = other.sizeX;
 	sizeY = other.sizeY;
-	delete arr;
 	arr = new float* [sizeY]; //operator* doesnt pass matrix tp other;
 	for (int i = 0; i < sizeY; i++)
 	{
@@ -42,13 +41,14 @@ Matrix::Matrix(const Matrix& other)
 	}
 }
 //assignment operator
-void Matrix::operator= (const Matrix& other)
+Matrix& Matrix::operator= (const Matrix& other)
 {
+	sizeX = other.sizeX;
+	sizeY = other.sizeY;
 	if (sizeX != other.sizeX || sizeY != other.sizeY)
 	{
-		sizeX = other.sizeX;
-		sizeY = other.sizeY;
-		delete arr;
+		
+		delete[] arr;
 		arr = new float* [sizeY];
 		for (int i = 0; i < sizeY; i++)
 		{
@@ -57,24 +57,22 @@ void Matrix::operator= (const Matrix& other)
 				arr[i][j] = other.arr[i][j];
 		}
 	}
-
 	else
 	{
-		sizeX = other.sizeX;
-		sizeY = other.sizeY;
 		for (int i = 0; i < sizeY; i++)
 		{
 			for (int j = 0; j < sizeX; j++)
 				arr[i][j] = other.arr[i][j];
 		}
 	}
+	return *this;
 }
 //destructor
 Matrix::~Matrix()
 {
-	delete arr;
+	delete[] arr;
 }
-//flii matrix with numbers
+//fill matrix with numbers
 void Matrix::fill()
 {
 	float tmp;
@@ -91,7 +89,7 @@ void Matrix::fill()
 	}
 }
 //and also this
-void Matrix::get_matrix()
+void Matrix::get_matrix() const
 {
 	for (int i = 0; i < sizeY; i++)
 	{
@@ -118,37 +116,38 @@ void Matrix::reset_size(int n_sizeY, int n_sizeX)
 	}
 }
 /////operations
-Matrix& Matrix::operator+(const Matrix& other)
+Matrix Matrix::operator+(const Matrix& other)
 {
+	Matrix nm(*this);
 	if (sizeY == other.sizeY && sizeX == other.sizeX)
 	{
-		Matrix nm(*this);
 		for (int i = 0; i < sizeY; i++)
 		{
 			for (int j = 0; j < sizeX; j++)
 				nm.arr[i][j] += other.arr[i][j];
 		}
-		return nm;
 	}
 	else
 		cout << "Addition can't be performed: different dimensions"<<endl;
+	return nm;
 }
-Matrix& Matrix::operator-(const Matrix& other)
+Matrix Matrix::operator-(const Matrix& other)
 {
+	Matrix nm(*this);
 	if (sizeY == other.sizeY && sizeX == other.sizeX)
 	{
-		Matrix nm(*this);
+		
 		for (int i = 0; i < sizeY; i++)
 		{
 			for (int j = 0; j < sizeX; j++)
 				nm.arr[i][j] -= other.arr[i][j];
 		}
-		return nm;
 	}
 	else
 		cout << "Substraction can't be performed: different dimensions" << endl;
+	return nm;
 }
-Matrix& Matrix::operator*(const Matrix& other)
+Matrix Matrix::operator*(const Matrix& other)
 {
 	if (sizeX == other.sizeX && sizeY == other.sizeY && sizeX == sizeY)
 	{
@@ -162,5 +161,4 @@ Matrix& Matrix::operator*(const Matrix& other)
 		}
 		return res;
 	}
-	
 }
