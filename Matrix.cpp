@@ -161,7 +161,7 @@ Matrix Matrix::operator-(const Matrix& other)
 }
 Matrix Matrix::operator*(const Matrix& other) 
 {
-	if (sizeX == other.sizeY && sizeY == other.sizeX/* && sizeX == sizeY*/)
+	if (sizeX == other.sizeY/* && sizeX == sizeY*/)
 	{
 		Matrix res(sizeY, other.sizeX);
 		for (int i = 0; i < sizeX * sizeY; i++)
