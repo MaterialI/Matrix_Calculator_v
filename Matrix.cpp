@@ -163,16 +163,17 @@ Matrix Matrix::operator*(const Matrix& other)
 {
 	if (sizeX == other.sizeY/* && sizeX == sizeY*/)
 	{
-		Matrix res(sizeY, other.sizeX);
-		for (int i = 0; i < sizeX * sizeY; i++)
-		{
-			for (int j = 0; j < sizeX; j++)
-			{
 
-				res.arr[(i - (i % sizeX)) / sizeX][i % sizeX] +=
-					arr[((i - (i % sizeX)) / sizeX)][j] * other.arr[j][(i % sizeX)];
+		Matrix res(sizeY, other.sizeX);
+			for (int i = 0; i < other.sizeX * sizeY; i++)
+			{
+				for (int j = 0; j < sizeX; j++)
+				{
+
+					res.arr[(i - (i % other.sizeX)) / other.sizeX][i % other.sizeX] +=
+						arr[((i - (i % other.sizeX)) / other.sizeX)][j] * other.arr[j][(i % other.sizeX)];
+				}
 			}
-		}
 		return res;
 	}
 	else

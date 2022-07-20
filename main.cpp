@@ -21,7 +21,7 @@ int main()
 	Matrix c = a * b;
 	cout << "________________________________" << endl;
 	c.get_matrix();*/
-	int x = 3;
+	/*int x = 1;
 	int y = 3;
 	float** arr1;
 	arr1 = new float* [y];
@@ -49,5 +49,85 @@ int main()
 	cout << "_________________________" << endl;
 	Matrix c = a.operator*(b);
 	c.operator*(0.1);
-	c.get_matrix();
+	c.get_matrix();*/
+	cout << "Hello, this is Materiali speaking. \nLet me introduce you to basic matrix calculator. It has 4 main functions: \naddition(+), substraction(-), multiplication of 2 matricies(*), and matrix scaling(x)" << endl;
+	cout << "So, lets roll" << endl;
+	char oper = '1';
+	Matrix* a;
+	Matrix* b;
+	Matrix* r;
+	int aX = 0, bX = 0, aY = 0, bY = 0;
+	while (oper != '0')
+	{
+		cout << "First of all, lets enter size of the first matrix and fill it" << endl;
+		cout << "enter 1-st matrix dimensions(int):" << endl;
+		cout << "y(vertical): ";
+		cin >> aY;
+		cout << "x(horizontal): ";
+		cin >> aX;
+		a = new Matrix(aY, aX);
+		cout << "Let's fill it: ";
+		a->fill();
+		
+		cout << "Now, lets enter size of the second matrix and fill it";
+		cout << "enter 2-nd matrix dimensions(int):" << endl;
+		cout << "y(vertical): ";
+		cin >> bY;
+		cout << "x(horizontal): ";
+		cin >> bX;
+		b = new Matrix(bY, bX);
+		cout << "Let's fill it: ";
+		b->fill();
+		cout << "Please, enter an operation, to exit enter (0)" << endl;
+		cin >> oper;
+		if (oper == '0')
+			break;
+		/*if (oper == '+'||oper=='-'||oper=='*')
+		{
+			cout << "Now, lets enter size of the second matrix and fill it";
+			cout << "enter 2-nd matrix dimensions(int):" << endl;
+			cout << "y(vertical): ";
+			cin >> bY;
+			cout << "x(horizontal): ";
+			cin >> bX;
+			b = new Matrix(bY, bX);
+			cout << "Let's fill it: ";
+			b->fill();
+		}*/
+		if (oper == '+')
+		{
+			cout << "You have chosen addition" << endl;
+			cout << "Matrix:" << endl;
+			r = new Matrix(a->operator+(*b));
+			r->get_matrix();
+			r->~Matrix();
+		}
+		else if (oper == '-')
+		{
+			cout << "You have chosen substraction" << endl;
+			cout << "Matrix:" << endl;
+			r = new Matrix(a->operator-(*b));
+			r->get_matrix();
+			r->~Matrix();
+		}
+		else if (oper == '*')
+		{
+			cout << "You have chosen multiplication" << endl;
+			cout << "Matrix:" << endl;
+			r = new Matrix(a->operator*(*b));
+			r->get_matrix();
+			r->~Matrix();
+		}
+		else if (oper == 'X')
+		{
+			float sc;
+			cout << "You have chosen scaling" << endl;
+			cout << "Enter your scalar: " << endl;
+			cin >> sc;
+			cout << "Matrix:" << endl;
+			r = new Matrix(a->operator*(sc));
+			r->get_matrix();
+			r->~Matrix();
+		}
+	}
 }
