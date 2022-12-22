@@ -18,6 +18,7 @@ Matrix::Matrix()
 Matrix::Matrix(int sizeY, int sizeX)
 {
 	this->sizeY = sizeY;
+	//
 	this->sizeX = sizeX;
 	arr = new float* [sizeY];
 	for (int i = 0; i < sizeY; i++)
