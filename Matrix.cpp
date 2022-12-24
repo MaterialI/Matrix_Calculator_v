@@ -1,7 +1,10 @@
+
 #include "Matrix.h"
 #include <iostream>
 using namespace std;
 //default constructor with redundant features
+//description: populates the matrix of size 1x1 with value 0
+
 Matrix::Matrix()
 {
 	sizeX = 1;
@@ -14,11 +17,37 @@ Matrix::Matrix()
 			arr[i][j] = 0;
 	}
 }
+
 //overloaded constructor
+//description: creates square matrix based on size argument
+//postcondition: identity matrix is created
+Matrix::Matrix(int size)
+{
+	sizeX = size;
+	sizeY = size;
+	arr = new float* [sizeY];
+	for (int i = 0; i < sizeY; i++)
+	{
+		arr[i] = new float[sizeX];
+		for(int j = 0;j<sizeX;j++)
+		{
+			if (i == j)
+			{
+				arr[i][j] = 1;
+				continue;
+			}
+			arr[i][j] = 0;
+		}
+	}
+}
+
+//overloaded constructor
+//description: creates any matrix including vectors based on the arguments of size x and y. 
+//postcondition: matrix/vector created and populated with 0s
 Matrix::Matrix(int sizeY, int sizeX)
 {
 	this->sizeY = sizeY;
-	//
+
 	this->sizeX = sizeX;
 	arr = new float* [sizeY];
 	for (int i = 0; i < sizeY; i++)
@@ -28,7 +57,10 @@ Matrix::Matrix(int sizeY, int sizeX)
 			arr[i][j] = 0;
 	}
 }
+
 //copy constructor
+//description: instantiates a copy of given matrix
+//postcondition: the matrix instance is created
 Matrix::Matrix(const Matrix& other)
 {
 	sizeX = other.sizeX;
@@ -41,6 +73,11 @@ Matrix::Matrix(const Matrix& other)
 			arr[i][j] = other.arr[i][j];
 	}
 }
+
+//overloaded constructor 
+//description: instantiates an instance of a matrix based on a 2-dimentional 
+// float** array and size x and y of the array
+//postcondition: 
 Matrix::Matrix(float** p_arr, int sizeY, int sizeX)
 {
 	this->sizeX = sizeX;
@@ -60,7 +97,7 @@ Matrix& Matrix::operator= (const Matrix& other)
 	sizeY = other.sizeY;
 	if (sizeX != other.sizeX || sizeY != other.sizeY)
 	{
-		
+
 		delete[] arr;
 		arr = new float* [sizeY];
 		for (int i = 0; i < sizeY; i++)
@@ -141,7 +178,7 @@ Matrix Matrix::operator+(const Matrix& other)
 		}
 	}
 	else
-		cout << "Addition can't be performed: different dimensions"<<endl;
+		cout << "Addition can't be performed: different dimensions" << endl;
 	return nm;
 }
 Matrix Matrix::operator-(const Matrix& other)
@@ -149,7 +186,7 @@ Matrix Matrix::operator-(const Matrix& other)
 	Matrix nm(*this);
 	if (sizeY == other.sizeY && sizeX == other.sizeX)
 	{
-		
+
 		for (int i = 0; i < sizeY; i++)
 		{
 			for (int j = 0; j < sizeX; j++)
@@ -160,7 +197,7 @@ Matrix Matrix::operator-(const Matrix& other)
 		cout << "Substraction can't be performed: different dimensions" << endl;
 	return nm;
 }
-Matrix Matrix::operator*(const Matrix& other) 
+Matrix Matrix::operator*(const Matrix& other)
 {
 	if (sizeX == other.sizeY/* && sizeX == sizeY*/)
 	{
@@ -185,4 +222,106 @@ Matrix Matrix::operator* (float cf)
 		for (int j = 0; j < sizeY; j++)
 			arr[i][j] *= cf;
 	return *this;
+}
+void Matrix::rrefRow()
+{
+	int current = 0;
+	if (sizeY != 1 && sizeY != 1)
+		rrefRowR(current);
+	else
+		cout << "Cannot Be row reduced (size < 1)" << endl;
+}
+void Matrix::rrefRowR(int current)
+{
+	if (current == sizeY || current == sizeX)
+	{
+		return;
+	}
+	else
+	{
+		for (int i = current+1; i < sizeY && i < sizeX; i++)
+		{
+			rowReduceS(i, current);
+		}
+		rrefRowR(current + 1);
+		for (int i = current-1; i >= 0; i--)
+		{
+			rowReduceS(i, current);
+		}
+	}
+}
+
+//Description: difference = difference - substracted i.e. the leading number in the row of [difference] will be 0
+void Matrix::rowReduceS(int difference, int substracted)
+{
+	if (this->arr[difference][substracted] == 0)
+	{
+		return;
+	}
+	float coeff = this->arr[substracted][substracted];
+	for (int i = 0; i < this->sizeX; i++)	// normalize vector
+	{
+		this->arr[substracted][i] = this->arr[substracted][i] / coeff;
+	}	
+	coeff = this->arr[difference][substracted];
+	for (int i = 0; i < this->sizeX; i++)	// perform the substraction
+	{
+		this->arr[difference][i] -= this->arr[substracted][i] * coeff;
+	}
+	return;
+}
+
+void Matrix::rowReduceInverse(Matrix& identity, int difference, int substracted)
+{
+	if (this->arr[difference][substracted] == 0)
+	{
+		return;
+	}
+	float coeff = this->arr[substracted][substracted];
+	for (int i = 0; i < this->sizeX; i++)	// normalize vector
+	{
+		this->arr[substracted][i] = this->arr[substracted][i] / coeff;
+		identity.arr[substracted][i] /= coeff;
+	}
+	coeff = this->arr[difference][substracted];
+	for (int i = 0; i < this->sizeX; i++)	// perform the substraction
+	{
+		this->arr[difference][i] -= this->arr[substracted][i] * coeff;
+		identity.arr[difference][i] -= identity.arr[substracted][i] * coeff;
+	}
+	return;
+}
+
+void Matrix::inverse(Matrix& identity)
+{
+	if (this->sizeX != this->sizeY && sizeX>1)
+	{
+		cout << "the inverse cannot be done: the matrix is not square" << endl;
+		return;
+	}
+	else
+	{
+		int current = 0;
+		inverseR(identity, current);
+	}
+}
+
+void Matrix::inverseR(Matrix& identity, int current)
+{
+	if (current == sizeY || current == sizeX)
+	{
+		return;
+	}
+	else
+	{
+		for (int i = current + 1; i < sizeY && i < sizeX; i++)
+		{
+			rowReduceInverse(identity, i, current);
+		}
+		inverseR(identity, current + 1);
+		for (int i = current - 1; i >= 0; i--)
+		{
+			rowReduceInverse(identity, i, current);
+		}
+	}
 }
