@@ -1,6 +1,6 @@
 
 #include "Matrix.h"
-#include <dvec.h>
+//#include <dvec.h>
 #include <iostream>
 using namespace std;
 //default constructor with redundant features
