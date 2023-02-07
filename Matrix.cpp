@@ -1,5 +1,6 @@
 
 #include "Matrix.h"
+#include <dvec.h>
 #include <iostream>
 using namespace std;
 //default constructor with redundant features
@@ -122,7 +123,9 @@ Matrix::~Matrix()
 {
 	delete[] arr;
 }
-//fill matrix with numbers
+//public method
+//fills the matrix with numbers row-wise
+//postcondition: the matrix is filled with numbers
 void Matrix::fill()
 {
 	float tmp;
@@ -139,6 +142,8 @@ void Matrix::fill()
 	}
 }
 //and also this
+//public method
+//prints out matrix to the user
 void Matrix::get_matrix() const
 {
 	for (int i = 0; i < sizeY; i++)
@@ -149,6 +154,9 @@ void Matrix::get_matrix() const
 	}
 }
 //be careful  (empties matrix), soon complementing and merging will be added. 
+//Private method 
+//resizes the matrix to specific dimentions 
+// postcondition: the matrix is resized, but EMPTY!!!!
 void Matrix::reset_size(int n_sizeY, int n_sizeX)
 {
 	if (sizeX != n_sizeX || sizeY != n_sizeY)
@@ -166,6 +174,9 @@ void Matrix::reset_size(int n_sizeY, int n_sizeX)
 	}
 }
 /////operations
+//Addition operator
+//adds entries of another matrix if both of them match their dimentions
+//postcondition: matrix has recalculated entries
 Matrix Matrix::operator+(const Matrix& other)
 {
 	Matrix nm(*this);
@@ -181,6 +192,9 @@ Matrix Matrix::operator+(const Matrix& other)
 		cout << "Addition can't be performed: different dimensions" << endl;
 	return nm;
 }
+//Addition operator
+//substracts entries of another matrix if both of them match their dimentions
+//postcondition: the matrix has recalculated entries 
 Matrix Matrix::operator-(const Matrix& other)
 {
 	Matrix nm(*this);
@@ -197,6 +211,9 @@ Matrix Matrix::operator-(const Matrix& other)
 		cout << "Substraction can't be performed: different dimensions" << endl;
 	return nm;
 }
+//multiplication operator
+//multiplies two matricies if both of them match their dimentions
+//postcondition: the matrix has recalculated entries 
 Matrix Matrix::operator*(const Matrix& other)
 {
 	if (sizeX == other.sizeY/* && sizeX == sizeY*/)
@@ -216,6 +233,9 @@ Matrix Matrix::operator*(const Matrix& other)
 	else
 		cout << "Multiplication cannot be performed, \n please verify that you entered correct dimentions for matricies" << endl;
 }
+//scalar operator
+//scale entries the matrix 
+//postcondition: the matrix has recalculated entries 
 Matrix Matrix::operator* (float cf)
 {
 	for (int i = 0; i < sizeY; i++)
@@ -271,6 +291,9 @@ void Matrix::rowReduceS(int difference, int substracted)
 	return;
 }
 
+//recursive private method. Creates row-reduced matrix
+//is used for inverse
+
 void Matrix::rowReduceInverse(Matrix& identity, int difference, int substracted)
 {
 	if (this->arr[difference][substracted] == 0)
@@ -292,8 +315,12 @@ void Matrix::rowReduceInverse(Matrix& identity, int difference, int substracted)
 	return;
 }
 
-void Matrix::inverse(Matrix& identity)
+//wrapper function for inverse
+//precondition: the matrix is square
+//postcondition: the matrix is inversed
+void Matrix::inverse()
 {
+	Matrix identity(this->sizeX);
 	if (this->sizeX != this->sizeY && sizeX>1)
 	{
 		cout << "the inverse cannot be done: the matrix is not square" << endl;
@@ -306,6 +333,8 @@ void Matrix::inverse(Matrix& identity)
 	}
 }
 
+//recursive private method
+//generates inverse through row-reduction of the function
 void Matrix::inverseR(Matrix& identity, int current)
 {
 	if (current == sizeY || current == sizeX)

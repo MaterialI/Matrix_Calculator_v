@@ -129,6 +129,15 @@
 //			r->get_matrix();
 //			r->~Matrix();
 //		}
+//		else if (oper == 'I')
+//		{
+//			cout << "You have chosen multiplication" << endl;
+//			cout << "Matrix:" << endl;
+//			r = a;
+//			r->inverse();
+//			r->get_matrix();
+//			r->~Matrix();
+//		}
 //	}
 //}
 #include <iostream>
@@ -157,7 +166,7 @@ int main()
 	srand(time(0));
 	
 	int x = 2;
-	int y = 7;
+	int y = 2;
 	Matrix ind(x);
 	ind.get_matrix();
 	cout << "___________________________" << endl;
@@ -182,15 +191,15 @@ int main()
 		for (int j = 0; j < y; j++)
 			arr2[i][j] = rand() % 11 - 5;
 	}
-	arr2[0][0] = 1;
-	arr2[0][1] = 0;
-	arr2[1][0] = 0;
-	arr2[1][1] = 1;
+	arr2[0][0] = 10;
+	arr2[0][1] = 10;
+	arr2[1][0] = 7;
+	arr2[1][1] = 10;
 	Matrix b(arr2, x, x);
 	b.get_matrix();
 	cout << "_________________________" << endl;
-	b.inverse(ind);
-	ind.get_matrix();
+	b.inverse();
+	b.get_matrix();
 	/*Matrix c = a.operator*(b);
 	c.operator*(0.1);
 	c.get_matrix();*/
